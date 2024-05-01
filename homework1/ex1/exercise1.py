@@ -20,7 +20,12 @@ def load_jsonl(filename: str)-> List[Dict]:
 
     return protein_list
 def single_one_hot_encode(amino_acid: "str") -> np.array:
-    pass
+    if len(amino_acid) != 1 or amino_acid not in AMINO_ACIDS:
+        raise ValueError("Can`t encode")
+    this_amino = np.zeros(20, dtype=np.int8)
+    this_amino[list(AMINO_ACIDS).index(amino_acid)] = 1
+
+    return this_amino
 
 def one_hot_encode_sequence(sequence:str, window_size=5) -> np.array:
     '''This function takes a sequence of amino acids and converts it into a 2D Numpy array
@@ -56,8 +61,11 @@ def calculate_Q3(prediction: str, truth:str) -> Tuple[float,float, float]:
 
 
 if __name__ == "__main__":
-    input_file = "./data/input.jsonl"
+    '''input_file = "./data/input.jsonl"
     entries = load_jsonl(input_file)
-    print(len(entries))
+    print(len(entries))'''
+
     # extend as you need
+    encoded_amino_acid = single_one_hot_encode('')
+    print(encoded_amino_acid)
     pass
