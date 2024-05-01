@@ -15,7 +15,16 @@ def load_jsonl(filename: str)-> List[Dict]:
         protein = {}
         for content in line:
             content = content.split(":")
-            protein[content[0].split('"')[-1]] = content[1].split('"')
+            protein[content[0].split('"')[1]] = content[1].split('"')[1]
+        #filter X
+        print(protein)
+        if 'X' in protein["sequence"]:
+            x_pos = list(protein["sequence"]).index('X')
+            protein["sequence"] = protein["sequence"][:x_pos] + protein["sequence"][x_pos+1:]
+            protein["label"] = protein["label"][:x_pos] + protein["label"][x_pos+1:]
+            protein["resolved"] = protein["resolved"][:x_pos] + protein["resolved"][x_pos+1:]
+
+
         protein_list.append(protein)
 
     return protein_list
@@ -61,11 +70,11 @@ def calculate_Q3(prediction: str, truth:str) -> Tuple[float,float, float]:
 
 
 if __name__ == "__main__":
-    '''input_file = "./data/input.jsonl"
+    input_file = "./data/input.jsonl"
     entries = load_jsonl(input_file)
-    print(len(entries))'''
+    print(len(entries))
 
     # extend as you need
-    encoded_amino_acid = single_one_hot_encode('')
+    encoded_amino_acid = single_one_hot_encode('Y')
     print(encoded_amino_acid)
     pass
