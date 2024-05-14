@@ -52,24 +52,24 @@ class NeuralNetwork(object):
         # help: assert dw.shape == self.w.shape
         # update weights of layers
         a0 = self.activation(self.w0 @ X.T)
-        a1 = self.activation(___________)
-        pred = self.activation(___________)
+        a1 = self.activation(self.w1 @ a0)
+        pred = self.activation(self.w2 @ a1)
 
         # compare true labels to predicted 
         output_error = y.T - pred
         # partial derivatives for layer 3
         # the pattern is this err * pred * (1-pred) @ input from the 
         # previous layer, normalized by the number of points
-        dw2 = (_______________________________) @ a1.T / len(X)
+        dw2 = (output_error) @ a1.T / len(X)
         # backpropagate error to layer 2
         # error of the previous layer is error @ weights
-        a1_error = output_error.T @ self.________
+        a1_error = output_error.T @ self.w2
         # partial derivatives for layer 2      
-        dw1 = (_____________________________) @ _______ / len(X)
+        dw1 = (a1_error) @ a0.T / len(X)
         # backpropagate error to layer 2
-        a0_error = ________ @ self.w1
+        a0_error = a1_error @ self.w1
         # partial derivatives for layer 1
-        dw0 = ____________________________________
+        dw0 = a0_error @ X / len(X)
 
 
         assert dw2.shape == self.w2.shape
@@ -80,7 +80,7 @@ class NeuralNetwork(object):
         # update the weights by applying the learning rate to dw
         self.w2 += learning_rate * dw2
         self.w1 += learning_rate * dw1
-        self.w0 += learning_rate * _____
+        self.w0 += learning_rate * dw0
 
     def predict(self, X):
         # apply first layer
