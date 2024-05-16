@@ -52,6 +52,7 @@ class NeuralNetwork(object):
         # help: assert dw.shape == self.w.shape
         # update weights of layers
         a0 = self.activation(self.w0 @ X.T)
+
         a1 = self.activation(self.w1 @ a0)
         pred = self.activation(self.w2 @ a1)
 
@@ -119,7 +120,6 @@ train_acc = []
 test_acc = []
 
 for i in range(1000):
-
     model.trainWeights(X_train, y_train_oh, learning_rate=0.08)
     y_test_predictions = model.predict(X_test)
     y_test_predictions = np.argmax(y_test_predictions, axis=0)
@@ -132,4 +132,4 @@ for i in range(1000):
 print("baseline: " + str(np.sum(labels)/len(labels)))
 
 plt.plot(epoche, train_acc, test_acc)
-plt.show()
+plt.savefig('plot.pdf')
